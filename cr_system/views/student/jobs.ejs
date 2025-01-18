@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.0.0/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-200 dark:bg-gray-900">
+
+    <div class="container mx-auto mt-8 p-6 bg-gray-800 rounded-lg shadow-lg">
+        <div class="mt-6">
+            <h3 class="text-lg font-bold text-blue-400 mb-4">Posted Jobs</h3>
+            <% if (jobs.length > 0) { %>
+                <ul class="space-y-4">
+                    <% jobs.forEach(job => { %>
+                        <li class="p-4 bg-gray-700 rounded-lg shadow-md">
+                            <h4 class="text-lg font-bold text-white">Job Title: <%= job.title %></h4>
+                            <p class="text-md font-semibold text-gray-300 mt-2">Description: <%= job.description %></p>
+                            <p class="text-md font-semibold text-gray-300">Vacancies: <%= job.vacancy %></p>
+                            <p class="text-md font-semibold text-gray-300">Salary(Monthly): ₹<%= job.salary %></p>
+                            <p class="text-md font-semibold text-gray-300">Last Date: <%= new Date(job.lastDate).toLocaleDateString() %></p>
+                            <p class="text-md font-semibold text-gray-400">Posted on: <%= new Date(job.createdAt).toLocaleDateString() %></p>
+                        </li>
+                    <% }) %>
+                </ul>
+            <% } else { %>
+                <p class="text-gray-400">No jobs posted yet.</p>
+            <% } %>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
+</body>
+</html>

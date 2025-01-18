@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Profile</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.0.0/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center">
+    <div class="max-w-md mx-auto bg-white rounded-lg shadow-lg p-6">
+        <h1 class="text-xl font-bold text-gray-800 mb-4">Student Profile</h1>
+        <p><strong>Name:</strong> <%= student.name %></p>
+        <p><strong>Email:</strong> <%= student.email %></p>
+        <p><strong>Phone:</strong> <%= student.phone %></p>
+        <!-- <p><strong>Date of Birth:</strong> <%= student.DOB.toDateString() %></p> -->
+        <p><strong>Gender:</strong> <%= student.gender %></p>
+        <p><strong>Address:</strong> <%= student.address %></p>
+        <p><strong>College:</strong> <%= student.college %></p>
+        <p><strong>Semester:</strong> <%= student.semester %></p>
+        <p><strong>GPA:</strong> <%= student.GPA %></p>
+        <a href="/student/dashboard" class="text-blue-500 hover:underline mt-4 inline-block">Go to Dashboard</a>
+    </div>
+</body>
+</html>

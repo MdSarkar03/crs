@@ -1,0 +1,85 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css" rel="stylesheet" />
+</head>
+
+<body class="bg-gray-100 dark:bg-gray-800 flex flex-col min-h-screen">
+    <header class="bg-gray-800 text-white py-4">
+        <div class="container mx-auto flex justify-between items-center px-4">
+            <%- include('../partials/header') %>
+        </div>
+    </header>
+    <hr class="border-black">
+
+    <div class="border-gray-300 dark:bg-gray-900 h-screen w-screen flex items-center justify-center fixed">
+        <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg w-full max-w-lg">
+
+            <div class="relative">
+                <a href="/company/dashboard" 
+                   class="absolute top-0 right-0 text-gray-400 bg-transparent hover:bg-red-500 hover:text-gray-900 rounded-lg p-2 inline-flex justify-center items-center dark:hover:bg-red-500 dark:hover:text-white"
+                   aria-label="Close">
+                    <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 6l12 12M6 18L18 6" />
+                    </svg>
+                </a>
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4 text-center underline">Post a Job</h2>
+            </div>         
+            
+            <form action="/company/postjob" method="POST" class="space-y-4">
+                <div>
+                    <label for="title" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Job Title/Role</label>
+                    <input type="text" id="title" name="title" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-800 dark:border-gray-700 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Job title" required />
+                </div>
+                <div>
+                    <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Job Description</label>
+                    <textarea id="description" name="description" rows="4" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-800 dark:border-gray-700 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Enter job description here..." required></textarea>
+                </div>
+                <div>
+                    <label for="vacancy" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Number of Vacancies</label>
+                    <input type="number" id="vacancy" name="vacancy" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-800 dark:border-gray-700 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Vacancies" required />
+                </div>
+                <div>
+                    <label for="salary" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Salary (in Rs.)</label>
+                    <input type="number" id="salary" name="salary" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-800 dark:border-gray-700 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Job salary" required />
+                </div>
+                <div>
+                    <label for="lastDate" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Last Date to Apply</label>
+                    <input type="date" id="lastDate" name="lastDate" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-800 dark:border-gray-700 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
+                </div>
+                <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Post job</button>
+            </form>
+
+            <% if (successMessage) { %>
+                <div id="success-popup" class="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50">
+                    <div class="bg-gray-100 dark:bg-gray-800 p-5 rounded-lg shadow-lg text-center">
+                        <p class="text-green-500 font-semibold"><%= successMessage %></p>
+                        <button 
+                            id="close-popup" 
+                            class="mt-4 px-4 py-2 w-full tracking-widest font-semibold bg-red-500 text-white rounded-lg hover:bg-red-600">
+                            Close
+                        </button>
+                    </div>
+                </div>
+              <% } %>
+
+        </div>
+    </div>
+
+        <!-- for popup -->
+    <script>
+        const popup = document.getElementById('success-popup');
+        const closeButton = document.getElementById('close-popup');
+        if (popup && closeButton) {
+            closeButton.addEventListener('click', () => {
+                popup.style.display = 'none';
+            });
+        }
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
+</body>
+</html>
