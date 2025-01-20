@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,14 +8,15 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.0.0/dist/tailwind.min.css" rel="stylesheet">
 </head>
+
 <body class="bg-gray-100 dark:bg-gray-900">
-    
+
     <nav class="fixed top-0 w-full z-10 bg-gray-800 text-white p-4 shadow-lg">
         <div class="container mx-auto flex justify-between items-center">
             <a href="/company/dashboard" class="hover:text-blue-400">Home</a>
             <ul class="flex space-x-4">
                 <li><a href="/company/postjob" class="hover:text-blue-300">Post Job</a></li>
-                <li><a  class="hover:text-blue-300">Applicants</a></li>
+                <!-- <li><a class="hover:text-blue-300">Applicants</a></li> -->
                 <li><a class="hover:text-blue-300" id="profile">Profile</a></li>
                 <li><a href="/company/signout" class="hover:text-blue-400">Sign Out</a></li>
             </ul>
@@ -25,6 +27,22 @@
         <h2 class="text-xl font-bold text-orange-600 mb-4">Welcome, <%= company.name %>!</h2>
     </div>
 
+    <!-- Applicants Modal -->
+    <div id="applicants-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex justify-center items-center">
+        <div class="bg-gray-800 text-white p-6 rounded-lg shadow-lg w-1/2">
+            <div class="flex justify-between items-center">
+                <h3 class="text-lg font-semibold text-orange-600 underline">Applicants</h3>
+                <button id="close-applicants" class="text-white text-2xl bg-transparent hover:bg-gray-700 rounded-lg p-2">&times;</button>
+            </div>
+            <div class="mt-4">
+                <ul id="applicants-list" class="space-y-2">
+                    <!-- Applicant details will be dynamically added here -->
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Profile Modal -->
     <div id="profile-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex justify-center items-center">
         <div class="bg-gray-800 text-white p-6 rounded-lg shadow-lg w-1/3">
             <div class="flex justify-between items-center">
@@ -38,7 +56,7 @@
             </div>
         </div>
     </div>
-    
+
     <div class="container mx-auto mt-8 p-6 bg-gray-300 dark:bg-gray-800 rounded-lg shadow-lg">
         <div class="mt-6">
             <h3 class="text-lg font-bold text-blue-300 mb-4">Posted Jobs</h3>
@@ -52,6 +70,7 @@
                             <p class="text-md font-semibold text-gray-300">Salary(Monthly): ₹<%= job.salary %></p>
                             <p class="text-md font-semibold text-gray-300">Last Date: <%= new Date(job.lastDate).toLocaleDateString() %></p>
                             <p class="text-md font-semibold text-gray-400">Posted on: <%= new Date(job.createdAt).toLocaleDateString() %></p>
+                            <button class="view-applicants mt-2 px-4 py-2 bg-blue-500 text-white rounded" data-job-id="<%= job._id %>">View Applicants</button>
                         </li>
                     <% }) %>
                 </ul>
@@ -60,18 +79,45 @@
             <% } %>
         </div>
     </div>
-    
+
     <script>
-        document.getElementById('profile').addEventListener('click', function(event) {
+        document.getElementById('profile').addEventListener('click', function (event) {
             event.preventDefault();
             document.getElementById('profile-modal').classList.remove('hidden');
         });
 
-        document.getElementById('close-profile').addEventListener('click', function() {
+        document.getElementById('close-profile').addEventListener('click', function () {
             document.getElementById('profile-modal').classList.add('hidden');
         });
-    </script>
 
-    <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
+        document.getElementById('close-applicants').addEventListener('click', function () {
+            document.getElementById('applicants-modal').classList.add('hidden');
+        });
+
+        document.querySelectorAll('.view-applicants').forEach(button => {
+            button.addEventListener('click', async function () {
+                const jobId = this.getAttribute('data-job-id');
+                const modal = document.getElementById('applicants-modal');
+                const applicantsList = document.getElementById('applicants-list');
+                applicantsList.innerHTML = '<p>Loading...</p>';
+                modal.classList.remove('hidden');
+
+                try {
+                    const response = await fetch(`/company/job/${jobId}/applicants`);
+                    const applicants = await response.json();
+
+                    applicantsList.innerHTML = applicants.map(applicant => `
+                        <li class="p-2 bg-gray-700 rounded-md">
+                            <p><strong>Name:</strong> ${applicant.studentId.name}</p>
+                            <p><strong>Email:</strong> ${applicant.studentId.email}</p>
+                        </li>
+                    `).join('');
+                } catch (error) {
+                    applicantsList.innerHTML = '<p>Error loading applicants.</p>';
+                }
+            });
+        });
+    </script>
 </body>
+
 </html>
